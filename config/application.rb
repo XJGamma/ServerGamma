@@ -6,6 +6,11 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# YAML Configuration
+CONFIG = YAML.load(File.read(File.expand_path('../config.yml', __FILE__)))
+CONFIG.merge! CONFIG.fetch(Rails.env, {})
+CONFIG.symbolize_keys!
+
 module ServerGamma
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -22,5 +27,11 @@ module ServerGamma
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    
+    # force https
+    # config.force_ssl = true
+
+    # gzip all response
+    # config.middleware.use Rack::Deflater
   end
 end
