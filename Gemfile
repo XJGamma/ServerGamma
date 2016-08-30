@@ -6,17 +6,17 @@ gem 'rails-api'
 # Use mysql as the database for Active Record
 gem "mysql2"
 
-# To use ActiveModel has_secure_password
+# Crypt, salt algorithm especially for password !
 gem 'bcrypt', '~> 3.1.7'
 
-# To use Jbuilder templates for JSON
-gem 'jbuilder'
-
 # Use unicorn as the app server
-gem 'unicorn'
+# gem 'unicorn'
 
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
+# Use thin as the app server. It supports SSL !
+gem 'thin'
+
+# Generate user avatar
+gem 'ruby_identicon'
 
 group :development do
   # Deploy with Capistrano
