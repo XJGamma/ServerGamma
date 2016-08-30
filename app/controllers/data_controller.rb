@@ -31,12 +31,12 @@ class DataController < ApplicationController
   end
 
   def pull_data
-    time_stamp_list = (params[:list] ||= [])
+    created_at_list = (params[:list] ||= [])
     data_list = []
     current_user = User.find_by(name: params[:name])
-    time_stamp_list.each do |time_stamp|
-      user_data = UserData.find_by(user_id: current_user.id, created_at: time_stamp[:created_at], updated_at: time_stamp[:updated_at])
-      data_list << { create_at: time_stamp[:created_at], updated_at: time_stamp[:updated_at], content: user_data.content } unless user_data.blank?
+    created_at_list.each do |created_at|
+      user_data = UserData.find_by(user_id: current_user.id, created_at: created_at)
+      data_list << { create_at: created_at, updated_at: user_data.updated_at, content: user_data.content } unless user_data.blank?
     end
     @status = :ok
     @detail_data = { list: data_list }
@@ -63,9 +63,9 @@ class DataController < ApplicationController
     @check_list.each do |time_stamp|
       index = @server_list.index{ |ts| ts[:created_at].strftime("%Y-%m-%d %H:%M:%S") == time_stamp[:created_at] }
       if index.nil?
-        new_list << { created_at: time_stamp[:created_at], updated_at: time_stamp[:updated_at] }
+        new_list << time_stamp[:created_at]
       elsif @server_list[index][:updated_at] < DateTime.strptime(time_stamp[:updated_at], "%Y-%m-%d %H:%M:%S")
-        update_list << { created_at: time_stamp[:created_at], updated_at: time_stamp[:updated_at] }
+        update_list << time_stamp[:created_at]
       end
     end
 
@@ -82,12 +82,12 @@ class DataController < ApplicationController
       index = @check_list.index{ |ts| ts[:created_at] == server_created_at}
 
       if index.nil?
-        data = { created_at: server_created_at, updated_at: server_updated_at }
-        data.merge!(content: server_data[:content]) if with_content
+        data = server_created_at
+        data = { created_at: server_created_at, updated_at: server_updated_at, content: server_data[:content] } if with_content
         new_list << data
       elsif server_data[:updated_at] > DateTime.strptime(@check_list[index][:updated_at], "%Y-%m-%d %H:%M:%S")
-        data = { created_at: server_created_at, updated_at: server_updated_at }
-        data.merge!(content: server_data[:content]) if with_content
+        data = server_created_at
+        data = { created_at: server_created_at, updated_at: server_updated_at, content: server_data[:content] } if with_content
         update_list << data
       end
     end
