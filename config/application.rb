@@ -29,7 +29,7 @@ module ServerGamma
     config.active_record.raise_in_transactional_callbacks = true
     
     # force https
-    # config.force_ssl = true
+    config.force_ssl = true
 
     # gzip all response
     # config.middleware.use Rack::Deflater
