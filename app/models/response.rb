@@ -13,7 +13,7 @@ class Response
       code: CONFIG[:valid_response],
       ret: {
         code: CONFIG[action][status]["code"],
-        message: CONFIG[action][status]["message"]
+        msg: CONFIG[action][status]["msg"]
       }
     }
 

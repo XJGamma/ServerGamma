@@ -26,7 +26,7 @@ class DataController < ApplicationController
         updated_at: DateTime.strptime(data[:updated_at], "%Y-%m-%d %H:%M:%S")
       )
     end
-    @detail_data = { message: "成功上传 #{data_list.count} 条数据", count: data_list.count }
+    @detail_data = { msg: "成功上传 #{data_list.count} 条数据", count: data_list.count }
     @status = :ok
   end
 
